@@ -63,7 +63,7 @@ k <- 1 ; rho.type <- 1 ; tr <- 2
 my.ctrl <- rlm.control(M=b, calc.full=0)
 
 criterias.s <- criterias.w <- rep(NA,14)
-x0 <- xx[, model]
+x0 <- xx[, model.s] # same as model.w -- should be full model
 tmp <- roboot(x=x0, y=y, nboot=nboot, boot.samp=boot.samp,
               control=my.ctrl)
 beta <- tmp$coef
