@@ -7,7 +7,7 @@ as described in [Salibian-Barrera, M. and Van Aelst, S. (2008)](http://dx.doi.or
 
 You will need to create a dynamic library from the code in `FRB-model-selection.c` using,
 for example, the following command in your shell:
-```
+```R
 R CMD SHLIB FRB-model-selection.c
 ```
 Note that if you are running Windows, you will need to have installed the [RTools package](https://cran.r-project.org/bin/windows/Rtools/)
