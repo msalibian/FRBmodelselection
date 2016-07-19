@@ -2,15 +2,6 @@
 
 // file FRB-model-selection.c
 //
-//
-// To do: 
-// - in rlm: change N/2 by N - (N - p)/2 = (N+p)/2
-//   where we count for zeroes (S-estimator)
-//   (in rwls_chi and  in R_S_rlm)
-// - incorporate roboot tests into MM package
-// - code Mardia's tests & send to Pat & Kat !!
-//
-//
 
 
 #include <stdio.h>
@@ -31,11 +22,11 @@
 
 
 /* FILE:  regSrand.c
- * Robust bootstrap for regression estimates 
+ * Robust bootstrap for regression estimates
  */
 
-double R_rlm_rand(double *X, double *y, int *N, int *P, 
-		int *Boot_Samp, int *Nres, 
+double R_rlm_rand(double *X, double *y, int *N, int *P,
+		int *Boot_Samp, int *Nres,
 		int *M, int *size_boot, double *ours, double *full,
 		double *Beta_m, double *Beta_s, double *Scale,
 		int *Seed, int *calc_full,
@@ -45,7 +36,7 @@ double R_rlm_rand(double *X, double *y, int *N, int *P,
 {
 void initialize_mat(double **a, int n, int m);
 void initialize_vec(double *a, int n);
-void R_S_rlm(double *X, double *y, int *n, int *P, 
+void R_S_rlm(double *X, double *y, int *n, int *P,
 		int *nres, int *max_it,
 		double *SCale, double *beta_s, double *beta_m,
 		int *converged_mm,
@@ -71,7 +62,7 @@ void mat_mat(double **, double **, double **, int, int, int);
 // void disp_mat_i(int **, int, int);
 // void disp_vec(double *, int);
 /* double **xb; */
-double *Xb, **xb; 
+double *Xb, **xb;
 int **boot_samp;
 double **x, **x2, **x3, **x4, *beta_m, *beta_s,*beta_aux;
 double *Fi, *res, *res_s, *w, *ww, dummyscale, scale;
@@ -93,7 +84,7 @@ v = (double *) malloc( p * sizeof(double) );
 v2 = (double *) malloc( p * sizeof(double) );
 v_aux = (double *) malloc( p * sizeof(double) );
 yb = (double *) malloc( n * sizeof(double) );
-Xb = (double*) malloc( n * p * sizeof(double) ); 
+Xb = (double*) malloc( n * p * sizeof(double) );
 x =  (double **) malloc ( n * sizeof(double *) );
 xb =  (double **) malloc ( n * sizeof(double *) );
 Fi  = (double *) malloc ( n * sizeof(double) );
@@ -117,7 +108,7 @@ for(i=0;i<p;i++) {
 	x4[i] = (double*) malloc (p * sizeof(double) );
 };
 /* copy X into x for easier handling */
-for(i=0;i<n;i++) 
+for(i=0;i<n;i++)
         for(j=0;j<p;j++)
                 x[i][j]=X[j*n+i];
 /* calculate robust regression estimates */
@@ -160,7 +151,7 @@ for(i=0;i<n;i++) {
 	scalar_vec(x[i],Psi_reg_prime(u,Psi_constant)*u,v_aux,p);
 	sum_vec(v,v_aux,v,p);
 	u2 += Chi_prime(u, c) * u;
-};	
+};
 
 /* scalar_vec(v, .5 * (double) (n-p) * scale / u2 , v, p);  */
 scalar_vec(v, .5 * (double) n * scale / u2 , v, p);
@@ -179,16 +170,16 @@ for(i=0;i<m;i++) {
 	// for(j=0;j<nboot; j++)
 	// 	indices[j]=boot_samp[i][j];
 	/* get pseudo observed y's */
-	for(j=0;j<nboot;j++) /* xb[j][p] = */ 
+	for(j=0;j<nboot;j++) /* xb[j][p] = */
 			yb[j] = y[boot_samp[i][j]];
-	for(j=0;j<nboot;j++) 
+	for(j=0;j<nboot;j++)
 		for(k=0;k<p;k++) {
-			// xb[j][k] = x[boot_samp[i][j]][k]; 
-			// Xb[k*nboot+j] = X[k*n + indices[j]]; 
+			// xb[j][k] = x[boot_samp[i][j]][k];
+			// Xb[k*nboot+j] = X[k*n + indices[j]];
 			Xb[k*nboot+j] = x[boot_samp[i][j]][k];
 			xb[j][k] = Xb[k*nboot+j];
 		};
-	
+
 	/* calculate full bootstrap estimate */
 
 	if( *calc_full == 1 )
@@ -196,7 +187,7 @@ for(i=0;i<m;i++) {
 			beta_s,beta_m,converged_mm,&seed,&c,
 			Psi_c, groups, n_group, k_fast_s);
 
-/* void R_S_rlm(double *X, double *y, int *n, int *P, 
+/* void R_S_rlm(double *X, double *y, int *n, int *P,
 		int *nres, int *max_it,
 		double *SCale, double *beta_s, double *beta_m,
 		int *converged_mm,
@@ -206,7 +197,7 @@ for(i=0;i<m;i++) {
 	/*	double *C, double *Psi_c, int *max_it,
 		int *groups, int *n_group, int *k_fast_s); */
 
-	// HERE 
+	// HERE
 
 	/* disp_mat(xb, nboot,p); */
 	// disp_vec(yb,nboot);
@@ -214,8 +205,8 @@ for(i=0;i<m;i++) {
 
 	/* calculate robust bootsrap */
 
-	scalar_vec(v,0.0,v,p);	 	/* v <- 0 */ 
-	scalar_mat(x2,0.0,x2,p,p);	/* x2 <- 0 */ 
+	scalar_vec(v,0.0,v,p);	 	/* v <- 0 */
+	scalar_mat(x2,0.0,x2,p,p);	/* x2 <- 0 */
 	s = 0.0;
 	for(j=0;j<nboot;j++) {
 		scalar_vec(xb[j],yb[j]*w[boot_samp[i][j]],v_aux,p);
@@ -226,19 +217,19 @@ for(i=0;i<m;i++) {
 		s += Chi(res_s[boot_samp[i][j]] / scale , c);
 	};
 	/* s = s * scale / .5 / (double) (nboot - p)  ;  */
-	s = s * scale / .5 / (double) n;  
+	s = s * scale / .5 / (double) n;
 	inverse(x2,x4,p);		/* x4 <- x2^-1 */
-	mat_vec(x4,v,v_aux,p,p);	/* v_aux <- x4 * v */ 
+	mat_vec(x4,v,v_aux,p,p);	/* v_aux <- x4 * v */
 	dif_vec(v_aux,Beta_m,v_aux,p); 	/* v_aux <- v_aux - beta_m */
-	/* v has the robust bootstrapped vector, correct it */ 
-	mat_vec(x3,v_aux,v,p,p);	/* v <- x3 * v_aux */ 
+	/* v has the robust bootstrapped vector, correct it */
+	mat_vec(x3,v_aux,v,p,p);	/* v <- x3 * v_aux */
 	scalar_vec(v2,s-scale,v_aux,p);
 	sum_vec(v_aux,v,v,p);
 
 	/* store the betas (splus-wise!) */
 	for(j=0;j<p;j++) {
 		ours[j*m+i]=v[j];
-		if( *calc_full == 1 ) 
+		if( *calc_full == 1 )
 			// full[j*m+i]=beta_m[j]-Beta_m[j];
 			full[j*m+i]=beta_m[j];
 	};
@@ -246,7 +237,7 @@ for(i=0;i<m;i++) {
 for(i=0;i<m;i++)
 	free(boot_samp[i]);
 free(boot_samp);
-for(i=0;i<n;i++) { 
+for(i=0;i<n;i++) {
 	free(x[i]);
 	free(xb[i]);
 	};
@@ -261,15 +252,15 @@ free(beta_aux);free(beta_m);free(beta_s);
 free(w);free(ww);free(Fi);free(res);
 free(v);free(v2);free(v_aux);free(yb);
 free(res_s);
-free(Xb); 
+free(Xb);
 return(0);
 }
- 
+
 /* FILE:  regSfixed.c
- * Robust bootstrap for regression estimates 
+ * Robust bootstrap for regression estimates
  */
 
-double R_rlm_fixed(double *X, double *y, int *N, int *P, int *Nres, 
+double R_rlm_fixed(double *X, double *y, int *N, int *P, int *Nres,
 		int *M, int *size_boot, double *ours, double *full,
 		double *Beta_m, double *Beta_s, double *Scale, int *Seed,
 		int *calc_full,
@@ -279,7 +270,7 @@ double R_rlm_fixed(double *X, double *y, int *N, int *P, int *Nres,
 {
 void initialize_mat(double **a, int n, int m);
 void initialize_vec(double *a, int n);
-void R_S_rlm(double *X, double *y, int *n, int *P, 
+void R_S_rlm(double *X, double *y, int *n, int *P,
 		int *nres, int *max_it,
 		double *SCale, double *beta_s, double *beta_m,
 		int *converged_mm,
@@ -329,7 +320,7 @@ x4 = (double **) malloc ( p * sizeof(double *) );
 beta_aux = (double *) malloc( p * sizeof(double) );
 beta_m = (double *) malloc( p * sizeof(double) );
 beta_s = (double *) malloc( p * sizeof(double) );
-for(i=0;i<n;i++) 
+for(i=0;i<n;i++)
 	x[i] =  (double*) malloc ((p+1) * sizeof(double) );
 for(i=0;i<p;i++) {
 	x2[i] = (double*) malloc (p * sizeof(double) );
@@ -338,7 +329,7 @@ for(i=0;i<p;i++) {
 };
 
 /* copy X into x for easier handling */
-for(i=0;i<n;i++) 
+for(i=0;i<n;i++)
         for(j=0;j<p;j++)
                 x[i][j]=X[j*n+i];
 
@@ -366,7 +357,7 @@ dif_vec(y,res_s,res_s,n);
 // scalar_mat(x3,0.0,x3,p,p);
 // scalar_mat(x4,0.0,x4,p,p);
 // scalar_vec(v,0.0,v,p);
-// 
+//
 
 initialize_mat(x3,p,p);
 initialize_mat(x4,p,p);
@@ -388,7 +379,7 @@ for(i=0;i<n;i++) {
 	scalar_vec(x[i],Psi_reg_prime(u,Psi_constant)*u,v_aux,p);
 	sum_vec(v,v_aux,v,p);
 	u2 += Chi_prime(u,c) * u;
-};	
+};
 scalar_vec(v, .5 * (double) n * scale / u2 , v, p);
 inverse(x3,x2,p);
 mat_mat(x2,x4,x3,p,p,p);
@@ -416,7 +407,7 @@ for(i=0;i<m;i++) {
 	R_S_rlm(X,yb,&nboot,P,Nres,max_it,&dummyscale,beta_s,beta_m,
 			converged_mm,&seed,C,
 			Psi_c, groups, n_group,k_fast_s);
-	if( dummyscale == 0.0 ) 
+	if( dummyscale == 0.0 )
 		for(j=0;j<p;j++) beta_m[j] = NA;
 	};
 
@@ -445,12 +436,12 @@ for(i=0;i<m;i++) {
 	/* store the betas */
 	for(j=0;j<p;j++) {
 		ours[j*m+i]=v[j];
-		if( *calc_full == 1 ) 
+		if( *calc_full == 1 )
 			full[j*m+i]=beta_m[j] - Beta_m[j];
 	};
 };
 
-for(i=0;i<n;i++)  
+for(i=0;i<n;i++)
 	free(x[i]);
 for(i=0;i<p;i++) {
 	free(x2[i]);
@@ -521,7 +512,7 @@ return(0);
 
 double Chi_prime(double x, double c)
 {
-/* // 
+/* //
 // // Tukey's bisquare loss function
 // */
 double t;
@@ -533,8 +524,8 @@ else { t = x / c ;
 
 
 double Chi(double x, double c)
-{ 
-/* // 
+{
+/* //
 // // Tukey's bisquare loss function
 // */
 double t;
@@ -547,9 +538,9 @@ else { t = x / c;
 
 double loss_Tukey(double x, double c)
 {
-if( fabs(x/c) < 1 ) 
-	return( (x/c)*(x/c)/2. * 
-			( 1 - (x/c)*(x/c) + 
+if( fabs(x/c) < 1 )
+	return( (x/c)*(x/c)/2. *
+			( 1 - (x/c)*(x/c) +
 		(x/c)*(x/c)*(x/c)*(x/c)/3. ) );
 else
 	return( 1. / 6. );
@@ -577,7 +568,7 @@ else	return( x / c * (1.0-(x/c)*(x/c))*
 double Psi_reg_prime(double x, double c)
 {
 if (fabs(x)>c) return(0.0);
-else	return( ( 1.0 - (x/c)*(x/c) ) * 
+else	return( ( 1.0 - (x/c)*(x/c) ) *
 		( 1.0 - 5.0 * x * x / c / c ) / c );
 }
 
@@ -624,13 +615,13 @@ void sampler_i(int n, int m, int *x)
  * rand() returns an integer between 0 and RAND_MAX
  */
 int i;
-for(i=0;i<m;i++) 
+for(i=0;i<m;i++)
 	x[i] = (int) ( (double) rand() / RAND_MAX * (double) (n-1) );
 }
 
 void sample_n_outof_N(int n, int N, int *x)
 {
-/* function to get a random sample of size n 
+/* function to get a random sample of size n
  * of the indices (0 to N) WITHOUT replication
  * *x receives the output
  * rand() returns an integer between 0 and RAND_MAX
@@ -647,7 +638,7 @@ for(i=0;i<n;i++) {
 		flag=0;
 		cand = (int) ( (double) rand() / RAND_MAX *
 					(double) N );
-		for(j=0;j<i;j++)	
+		for(j=0;j<i;j++)
 			if( cand==x[j] ) flag=1;
 		};
 	x[i]=cand;
@@ -694,7 +685,7 @@ void sum_mat(double **a, double **b, double **c, int n, int m)
 {
 register int i,j;
 for(i=0;i<n;i++)
-	for(j=0;j<m;j++) 
+	for(j=0;j<m;j++)
 		c[i][j] = a[i][j] + b[i][j];
 }
 
@@ -745,24 +736,24 @@ for(i=0;i<n;i++) c[i] = a[i] - b[i];
 void dif_mat(double **a, double **b, double **c, int n, int m)
 {
 register int i,j;
-for(i=0;i<n;i++) 
+for(i=0;i<n;i++)
 	for(j=0;j<m;j++) c[i][j] = a[i][j] - b[i][j];
 }
 
 void mat_vec(double **a, double *b, double *c, int n, int m)
 {
-register int i,j; 
-for(i=0;i<n;i++) 
+register int i,j;
+for(i=0;i<n;i++)
 	for(c[i]=0,j=0;j<m;j++) c[i] += a[i][j] * b[j];
 }
 
-void mat_mat(double **a, double **b, double **c, int n, 
+void mat_mat(double **a, double **b, double **c, int n,
 		int m, int l)
 {
-register int i,j,k; 
-for(i=0;i<n;i++) 
+register int i,j,k;
+for(i=0;i<n;i++)
 	for(j=0;j<l;j++) {
-	c[i][j] = 0; 
+	c[i][j] = 0;
 	for(k=0;k<m;k++) c[i][j] += a[i][k] * b[k][j];
 	};
 }
@@ -797,7 +788,7 @@ if( lu(c,&n,e) == 1) {
 	for(i=0;i<n;i++) free(c[i]);
 	free(c);free(e);
 	return(1);
-	};	
+	};
 for(j=0;j<n;j++) b[j][i] = e[j] ;
 };
 for(i=0;i<n;i++) free(c[i]);
@@ -859,7 +850,7 @@ Rprintf("\n");
 }
 */
 
-void R_S_rlm(double *X, double *y, int *n, int *P, 
+void R_S_rlm(double *X, double *y, int *n, int *P,
 		int *nres, int *max_it,
 		double *SCale, double *beta_s, double *beta_m,
 		int *converged_mm,
@@ -873,9 +864,9 @@ void fast_s_large_n(double *X, double *y,
 		int *ggroups, int *nn_group,
 		int *bbest_r, double *bb, double *rrhoc,
 		double *bbeta, double *sscale);
-void fast_s(double *X, double *y, 
-		int *nn, int *pp, int *NN, int *K, 
-		int *bbest_r, double *bb,	
+void fast_s(double *X, double *y,
+		int *nn, int *pp, int *NN, int *K,
+		int *bbest_r, double *bb,
 		double *rrhoc, double *bbeta, double *sscale);
 int rwls(double **, int, int, double *, double *, double,
 		double, int, double);
@@ -889,14 +880,14 @@ double best_s=NA, **x_samp, *cand_beta, **x; /* scale */
 double *resid; /* ,s;  */
 double *beta,c, *temp1, *temp2;
 int Nres,N,p,*b_i; /* , zeroes;  */
-int bbest_r = 2, ggroups = *Groups, 
+int bbest_r = 2, ggroups = *Groups,
 	nn_group = *N_group, k_fast_s = *K_fast_s;
 double b = 0.5, rrhoc = *C;
 c = *C;
 Nres = *nres; N = *n; p = *P;
-srand((long)*seed_rand); 
+srand((long)*seed_rand);
 x = (double **) malloc( N * sizeof(double*) );
-for(i=0;i<N;i++) 
+for(i=0;i<N;i++)
         x[i]= (double *) malloc( (p+1) * sizeof(double) );
 b_i = (int *) malloc( p * sizeof(int) );
 cand_beta = (double *) malloc( p * sizeof(double) );
@@ -920,8 +911,8 @@ if( *n > 2000 )
 	fast_s_large_n(X, y, n, P, nres, &k_fast_s,
 			&ggroups, &nn_group, &bbest_r,
 			&b, &rrhoc, beta_s, &best_s);
-else 
-	fast_s(X, y, n, P, nres, &k_fast_s, 
+else
+	fast_s(X, y, n, P, nres, &k_fast_s,
 			&bbest_r, &b, &rrhoc, beta_s, &best_s);
 if(fabs(best_s) < ZERO) {
 			 *SCale = 0.0;
@@ -956,7 +947,7 @@ free(x);free(temp1); free(temp2);free(b_i);
 }
 
 
-/* 
+/*
 //
 // 2004 / 5 -- Matias Salibian-Barrera & Victor Yohai
 // Department of Statistics, University of British Columbia
@@ -998,26 +989,26 @@ void fast_s_large_n(double *X, double *y,
 */
 void reset_mat(double **a, int n, int m);
 double loss_rho(double *r, double scale, int n, int p, double rhoc);
-double find_scale(double *r, double b, double rhoc, 
+double find_scale(double *r, double b, double rhoc,
 			double initial_scale, int n, int p);
 // void disp_mat(double **a, int n, int m);
 // void disp_vec(double *a, int n);
-void fast_s_with_memory(double **x, double *y, 
-		int *nn, int *pp, int *NN, int *K, 
-		int *bbest_r, double *bb,	
-		double *rrhoc, 
+void fast_s_with_memory(double **x, double *y,
+		int *nn, int *pp, int *NN, int *K,
+		int *bbest_r, double *bb,
+		double *rrhoc,
 		double **best_betas, double *best_scales);
 void sample_n_outof_N(int n, int N, int *x);
 void refine_fast_s(double **x, double *y, double *weights,
 			int n, int p, double *res,
-			double *tmp, double *tmp2, 
+			double *tmp, double *tmp2,
 			double **tmp_mat, double **tmp_mat2,
 			double *beta_cand, int kk,
 			int conv, double b, double rhoc, double *is, double *beta_ref,
 			double *scale);
 int find_max(double *a, int n);
 register int i,j,k,k2;
-int n = *nn, p = *pp, kk = *K, *indices; 
+int n = *nn, p = *pp, kk = *K, *indices;
 int groups = *ggroups, n_group = *nn_group, best_r = *bbest_r;
 double **best_betas, *best_scales;
 double **final_best_betas, *final_best_scales;
@@ -1047,7 +1038,7 @@ best_scales = (double *) malloc( k * sizeof( double ) );
 for(i=0; i < k; i++)
 		best_betas[i] = (double*) malloc( p * sizeof(double) );
 x = (double**) malloc( n * sizeof(double *) );
-for(i=0; i<n; i++) 
+for(i=0; i<n; i++)
 	x[i] = (double*) malloc( p * sizeof(double) );
 k = n_group * groups;
 indices = (int *) malloc( k * sizeof(int) );
@@ -1055,12 +1046,12 @@ xsamp = (double**) malloc( k * sizeof(double *) );
 ysamp = (double*) malloc( k * sizeof(double) );
 for(i=0;i<k;i++)
 	xsamp[i] = (double*) malloc( p * sizeof(double) );
-for(i=0;i<n;i++) 
+for(i=0;i<n;i++)
 	for(j=0;j<p;j++)
 		x[i][j]=X[j*n+i];
 /* assume that n > 2000
 // k = n_group * groups
-// set the seed 
+// set the seed
 */
 srand((long)37);
 /* get a sample of k indices */
@@ -1071,7 +1062,7 @@ for(i=0;i<k;i++) {
 		xsamp[i][j] = x[indices[i]][j];
 		ysamp[i] = y[indices[i]];
 };
-/* now we go through the groups and get the 
+/* now we go through the groups and get the
 // *bbest_r best betas for each group
 */
 for(i=0; i<groups; i++) {
@@ -1092,13 +1083,13 @@ for(i=0; i < best_r; i++)
 	final_best_scales[i] = INFI;
 worst_sc = INFI;
 /* set the matrix to zero */
-reset_mat(final_best_betas, best_r, p); 
+reset_mat(final_best_betas, best_r, p);
 k = n_group * groups;
 for(i=0; i< (best_r * groups) ; i++) {
 	refine_fast_s(xsamp, ysamp, weights, k, p, res,
 			tmp, tmp2, tmp_mat, tmp_mat2,
-			best_betas[i], kk, conv, b, rhoc, 
-			best_scales+i, beta_ref, 
+			best_betas[i], kk, conv, b, rhoc,
+			best_scales+i, beta_ref,
 			&sc);
 	if ( loss_rho(res, worst_sc, k, p, rhoc) < b )  {
 		/* scale will be better */
@@ -1111,7 +1102,7 @@ for(i=0; i< (best_r * groups) ; i++) {
 		worst_sc = final_best_scales[pos_worst_scale];
 	};
 };
-/* now iterate the best "best_r" 
+/* now iterate the best "best_r"
 // betas in the whole sample (until convergence if possible)
 */
 best_sc = INFI;
@@ -1119,8 +1110,8 @@ conv = 1;
 for(i=0; i<best_r; i++) {
 	refine_fast_s(x, y, weights, n, p, res,
 			tmp, tmp2, tmp_mat, tmp_mat2,
-			final_best_betas[i], kk, conv, b, rhoc, 
-			final_best_scales+i, beta_ref, 
+			final_best_betas[i], kk, conv, b, rhoc,
+			final_best_scales+i, beta_ref,
 			&aux);
 	if(aux < best_sc) {
 			*sscale = best_sc = aux;
@@ -1135,7 +1126,7 @@ k = best_r * groups;
 for(i=0;i<k;i++) free( best_betas[i] );
 free(best_betas); free(indices); free(ysamp);
 k = n_group * groups;
-for(i=0;i<k;i++) free(xsamp[i]); 
+for(i=0;i<k;i++) free(xsamp[i]);
 free(xsamp); free(tmp); free(tmp2);
 for(i=0;i<p;i++) {
 	free(tmp_mat[i]);
@@ -1151,10 +1142,10 @@ free(beta_ref);
 
 }
 
-void fast_s_with_memory(double **x, double *y, 
-		int *nn, int *pp, int *NN, int *K, 
-		int *bbest_r, double *bb,	
-		double *rrhoc, 
+void fast_s_with_memory(double **x, double *y,
+		int *nn, int *pp, int *NN, int *K,
+		int *bbest_r, double *bb,
+		double *rrhoc,
 		double **best_betas, double *best_scales)
 {
 /*
@@ -1168,7 +1159,7 @@ void fast_s_with_memory(double **x, double *y,
 // *NN = number of re-sampling candidates to be taken
 // *K = number of refining steps for each candidate
 // *bbest_r = number of (refined) to be retained for
-// 					full iteration 
+// 					full iteration
 // 	*bb = right-hand side of the S-equation
 // 	*rrhoc  = tuning constant of the \rho function
 // 	*bbeta  = returning fast-S estimator
@@ -1176,7 +1167,7 @@ void fast_s_with_memory(double **x, double *y,
 */
 void refine_fast_s(double **x, double *y, double *weights,
 			int n, int p, double *res,
-			double *tmp, double *tmp2, 
+			double *tmp, double *tmp2,
 			double **tmp_mat, double **tmp_mat2,
 			double *beta_cand, int kk,
 			int conv, double b, double rhoc,
@@ -1185,7 +1176,7 @@ void refine_fast_s(double **x, double *y, double *weights,
 // void disp_vec(double *a, int n);
 // void disp_mat(double **a, int n, int m);
 int find_max(double *a, int n);
-double find_scale(double *r, double b, double rhoc, 
+double find_scale(double *r, double b, double rhoc,
 			double initial_scale, int n, int p);
 double loss_rho(double *r, double s, int n, int p, double rhoc);
 double vecprime_vec(double *a, double *b, int n);
@@ -1196,7 +1187,7 @@ int n = *nn, p = *pp, Nres = *NN, kk = *K;
 int *b_i, flag, conv;
 double **x_samp, *beta_cand, *beta_ref, *res, aux;
 double b = *bb, rhoc = *rrhoc, sc, worst_sc = INFI;
-double *weights; 
+double *weights;
 int best_r = *bbest_r, pos_worst_scale;
 double *tmp, *tmp2, **tmp_mat2, **tmp_mat;
 
@@ -1237,21 +1228,21 @@ for(i=0;i<Nres;i++) {
 			return;
 		};
 		/* take a sample of the indices  */
-		sample_n_outof_N(p,n-1,b_i);  
+		sample_n_outof_N(p,n-1,b_i);
 		/* build the submatrix */
-		for(j=0;j<p;j++) { 	
+		for(j=0;j<p;j++) {
 			for(k=0;k<p;k++)
 				x_samp[j][k]=x[b_i[j]][k];
 			x_samp[j][p]=y[b_i[j]];
-			};	
-		/* solve the system, lu = 1 means 
+			};
+		/* solve the system, lu = 1 means
 		// matrix is singular
 		*/
 		flag = lu(x_samp,pp,beta_cand);
 	};
 	refine_fast_s(x, y, weights, n, p, res,
 			tmp, tmp2, tmp_mat, tmp_mat2,
-			beta_cand, kk, conv, b, rhoc, 
+			beta_cand, kk, conv, b, rhoc,
 			&aux, beta_ref, &sc);
 	if ( loss_rho(res, worst_sc, n, p, rhoc) < b )  {
 		/* scale will be better */
@@ -1281,9 +1272,9 @@ for(i=0;i<p;i++) {
 free(x_samp); free(tmp_mat); free(tmp_mat2);
 }
 
-void fast_s(double *X, double *y, 
-		int *nn, int *pp, int *NN, int *K, 
-		int *bbest_r, double *bb,	
+void fast_s(double *X, double *y,
+		int *nn, int *pp, int *NN, int *K,
+		int *bbest_r, double *bb,
 		double *rrhoc, double *bbeta, double *sscale)
 {
 /*
@@ -1293,7 +1284,7 @@ void fast_s(double *X, double *y,
 // *NN = number of re-sampling candidates to be taken
 // *K = number of refining steps for each candidate
 // *bbest_r = number of (refined) to be retained for
-// 					full iteration 
+// 					full iteration
 // 	*bb = right-hand side of the S-equation
 // 	*rrhoc  = tuning constant of the \rho function
 // 	*bbeta  = returning fast-S estimator
@@ -1301,7 +1292,7 @@ void fast_s(double *X, double *y,
 */
 void refine_fast_s(double **x, double *y, double *weights,
 			int n, int p, double *res,
-			double *tmp, double *tmp2, 
+			double *tmp, double *tmp2,
 			double **tmp_mat, double **tmp_mat2,
 			double *beta_cand, int kk,
 			int conv, double b, double rhoc,
@@ -1310,7 +1301,7 @@ void refine_fast_s(double **x, double *y, double *weights,
 // void disp_vec(double *a, int n);
 // void disp_mat(double **a, int n, int m);
 int find_max(double *a, int n);
-double find_scale(double *r, double b, double rhoc, 
+double find_scale(double *r, double b, double rhoc,
 			double initial_scale, int n, int p);
 double loss_rho(double *r, double s, int n, int p, double rhoc);
 double vecprime_vec(double *a, double *b, int n);
@@ -1349,7 +1340,7 @@ for(i=0;i<p;i++) {
 	tmp_mat[i] = (double *) malloc( p * sizeof(double) );
 	tmp_mat2[i] = (double *) malloc( (p+1) * sizeof(double) );
 };
-for(i=0;i<n;i++) 
+for(i=0;i<n;i++)
         for(j=0;j<p;j++)
                 x[i][j]=X[j*n+i];
 /* set the seed  */
@@ -1371,14 +1362,14 @@ for(i=0;i<Nres;i++) {
 			return;
 		};
 		/* take a sample of the indices  */
-		sample_n_outof_N(p,n-1,b_i);  
+		sample_n_outof_N(p,n-1,b_i);
 		/* build the submatrix */
-		for(j=0;j<p;j++) { 	
+		for(j=0;j<p;j++) {
 			for(k=0;k<p;k++)
 				x_samp[j][k]=x[b_i[j]][k];
 			x_samp[j][p]=y[b_i[j]];
-			};	
-		/* solve the system, lu = 1 means 
+			};
+		/* solve the system, lu = 1 means
 		// matrix is singular
 		*/
 		flag = lu(x_samp,pp,beta_cand);
@@ -1389,7 +1380,7 @@ for(i=0;i<Nres;i++) {
 	/* improve the re-sampling candidate */
 	refine_fast_s(x, y, weights, n, p, res,
 			tmp, tmp2, tmp_mat, tmp_mat2,
-			beta_cand, kk, conv, b, rhoc, 
+			beta_cand, kk, conv, b, rhoc,
 			&aux, beta_ref, &sc);
 	if( fabs(sc) < ZERO) {
 		*sscale = sc;
@@ -1428,8 +1419,8 @@ conv = 1;
 for(i=0; i<best_r; i++) {
 	refine_fast_s(x, y, weights, n, p, res,
 			tmp, tmp2, tmp_mat, tmp_mat2,
-			best_betas[i], kk, conv, b, rhoc, 
-			best_scales+i, beta_ref, 
+			best_betas[i], kk, conv, b, rhoc,
+			best_scales+i, beta_ref,
 			&aux);
 	if(aux < best_sc) {
 			*sscale = best_sc = aux;
@@ -1456,7 +1447,7 @@ free(x); free(x_samp); free(tmp_mat); free(tmp_mat2);
 
 void refine_fast_s(double **x, double *y, double *weights,
 			int n, int p, double *res,
-			double *tmp, double *tmp2, 
+			double *tmp, double *tmp2,
 			double **tmp_mat, double **tmp_mat2,
 			double *beta_cand, int kk,
 			int conv, double b, double rhoc,
@@ -1470,16 +1461,16 @@ void refine_fast_s(double **x, double *y, double *weights,
 // y = vector with responses
 // tmp = aux vector of length n
 // tmp2 = aux vector of length n
-// tmp_mat = aux matrix p x p 
+// tmp_mat = aux matrix p x p
 // tmp_mat2 = aux matrix p x (p+1)
 */
-void fast_s_irwls(double **x, double *y, 
+void fast_s_irwls(double **x, double *y,
 		double *weights, int n, int p, double *beta_ref,
 		double **tmp_mat, double *tmp, double *tmp2);
 double norm_diff(double *x, double *y, int n);
 double norm(double *x, int n);
 int lu(double **a,int *P, double *x);
-void get_weights_rhop(double *r, double s, int n, 
+void get_weights_rhop(double *r, double s, int n,
 		double rhoc, double *w);
 void r_sum_w_x(double **x, double *w, int n, int p,
 			double *tmp,
@@ -1507,18 +1498,18 @@ if( zeroes > ((double)n /2.) )
 	return;
 };
 
-if( initial_scale < 0.0 ) 
+if( initial_scale < 0.0 )
 	initial_scale = MAD(res, n, 0, tmp, tmp2);
 
 s0 = initial_scale;
-if( conv > 0 ) 
+if( conv > 0 )
 		kk = MAX_ITER_FAST_S;
 if(kk > 0) {
 for(i=0; i < kk; i++) {
 
 	/* one step for the scale */
 	s0 = s0 * sqrt( loss_rho(res,
-					s0, n, p, rhoc) / b ); 
+					s0, n, p, rhoc) / b );
 	/* compute weights for IRWLS */
 	get_weights_rhop(res, s0, n, rhoc, weights);
 	/* compute the matrix for IRWLS */
@@ -1543,19 +1534,19 @@ for(i=0; i < kk; i++) {
 	for(j=0;j<n;j++)
 		res[j] = y[j] - vecprime_vec(x[j], beta_ref , p);
 	for(j=0; j<p; j++)
-		beta_cand[j] = beta_ref[j]; 
+		beta_cand[j] = beta_ref[j];
 };
 };
 *scale = s0;
 }
 
 
-void fast_s_irwls(double **x, double *y, 
+void fast_s_irwls(double **x, double *y,
 		double *weights, int n, int p, double *beta_ref,
 		double **tmp_mat, double *tmp, double *tmp2)
 {
 void mat_prime_vec(double **a, double *b, double *c, int n, int m);
-void mat_prime_mat_w(double **a, double *w, double **c, 
+void mat_prime_mat_w(double **a, double *w, double **c,
 		int n, int m);
 register int i;
 for(i=0;i<n;i++) tmp[i] = weights[i] * y[i];
@@ -1565,22 +1556,22 @@ for(i=0;i<p;i++) tmp_mat[i][p] = tmp2[i];
 lu(tmp_mat, &p, beta_ref);
 }
 
-void get_weights_rhop(double *r, double s, 
-		int n, 
+void get_weights_rhop(double *r, double s,
+		int n,
 		double rhoc, double *w)
 {
 register int i;
 double a;
 for(i=0;i<n;i++) {
 	a = r[i] / s / rhoc;
-	if( fabs(a) > 1 ) 
+	if( fabs(a) > 1 )
 			w[i] = 0;
 	else
 			w[i] = (1. - a*a) * (1. - a*a);
 };
 }
 
-double find_scale(double *r, double b, double rhoc, 
+double find_scale(double *r, double b, double rhoc,
 			double initial_scale, int n, int p)
 {
 double loss_rho(double *r, double scale, int n, int p, double rhoc);
@@ -1603,7 +1594,7 @@ int find_max(double *a, int n)
 register int i;
 int k=0;
 double tmp = a[0];
-if(n==1) return(0);	
+if(n==1) return(0);
 else {
 	for(i=1;i<n;i++)
 		if(a[i] > tmp) {
@@ -1691,13 +1682,13 @@ if(center > 0) {
 } else {
 	med = 0.0;
 };
-for(i=0;i<n;i++) 
+for(i=0;i<n;i++)
 	b[i] = a[i] - med;
 q = median_abs(b,n,tmp) * 1.4826;
 return(q);
 }
 
-double median(double *x, int n, double *aux) 
+double median(double *x, int n, double *aux)
 {
 double kthplace(double *,int,int);
 double t;
@@ -1721,33 +1712,33 @@ else 	t = kthplace(aux,n, n/2+1 ) ;
 return(t);
 }
 
-int rwls(double **a, int n, int p, 
-			double *estimate, 
+int rwls(double **a, int n, int p,
+			double *estimate,
 			double *i_estimate,
-			double scale, double epsilon, 
+			double scale, double epsilon,
 			int max_it, double Psi_constant
 			)
 {
 /* a <- matrix n x (p+1) (n rows and p+1 columns) where the data's stored
  * res <- vector n of residuals
  * b <- auxiliar matrix to store A'A | A'c
- */         
-int lu(double **, int *, double *);   
+ */
+int lu(double **, int *, double *);
 // void disp_vec(double*,int);
 double norm_diff(double *, double *, int);
 double Psi_reg(double, double);
 double Loss_Tukey(double*, int, double);
 
-double **b,s,*beta1, *beta2, *beta0, *weights, *resid;    
+double **b,s,*beta1, *beta2, *beta0, *weights, *resid;
 double r,loss1,loss2,lambda;
 int iterations=0, iter_lambda;
 register int i,j,k;
 if ( (b = (double **) malloc ( p * sizeof(double *) ) )==NULL )
-	{// Rprintf("\nRun out of memory in rwls\n"); 
+	{// Rprintf("\nRun out of memory in rwls\n");
 		exit(1); };
 for (i=0;i<p;i++)
 	if ( (b[i] = (double *) malloc ( (p+1) * sizeof(double) ) )==NULL )
-		{// Rprintf("\nRun out of memory in rwls\n"); 
+		{// Rprintf("\nRun out of memory in rwls\n");
 			exit(1); };
 beta1 = (double *) malloc( p * sizeof(double) );
 beta2 = (double *) malloc( p * sizeof(double) );
@@ -1758,27 +1749,27 @@ for(i=0;i<p;i++)
 	beta2[i] = (beta1[i]=i_estimate[i]) + 1;
 /* main loop */
 while( (norm_diff(beta1,beta2,p) > epsilon) &&
-	( ++iterations < max_it ) ) { 
+	( ++iterations < max_it ) ) {
 for(i=0;i<n;i++) {
 	s=0;
 	for(j=0;j<p;j++)
 		s += a[i][j] * beta1[j];
 	r = a[i][p]- s;
-	if(fabs(r/scale)<1e-7) 
+	if(fabs(r/scale)<1e-7)
 		weights[i] = 1.0 / scale / Psi_constant;
-                else 
+                else
         	weights[i] = Psi_reg(r/scale, Psi_constant) / (r/scale);
 };
 for(j=0;j<p;j++) beta2[j]=beta1[j];
 // /* get the residuals and loss for beta2 */
-// for(i=0;i<n;i++) 
+// for(i=0;i<n;i++)
 // 	{ s = 0;
-// 	for(j=0;j<p;j++) 
+// 	for(j=0;j<p;j++)
 // 		s += a[i][j] * beta2[j];
 // 	resid[i] = (a[i][p] - s)/scale;
 // 	};
 // loss2 = Loss_Tukey(resid,n,Psi_constant);
-/* S+ version of the following code 
+/* S+ version of the following code
  * A <- matrix(0, p, p)
  * Y <- rep(0, p)
  * for(i in 1:n) {
@@ -1787,7 +1778,7 @@ for(j=0;j<p;j++) beta2[j]=beta1[j];
  * }
  * beta1 <- solve(A, Y)
  */
-for(j=0;j<p;j++) 
+for(j=0;j<p;j++)
 	for(k=0;k<=p;k++)  {
 		b[j][k]=0.0;
 		 for(i=0;i<n;i++)
@@ -1796,25 +1787,25 @@ for(j=0;j<p;j++)
 lu(b,&p,beta1);
 /* is beta1 good enough? */
 /* get the residuals and loss for beta1 */
-// for(i=0;i<n;i++) 
+// for(i=0;i<n;i++)
 // 	{ s = 0;
-// 	for(j=0;j<p;j++) 
+// 	for(j=0;j<p;j++)
 // 		s += a[i][j] * beta1[j];
 // 	resid[i] = (a[i][p] - s)/scale;
 // 	};
 // loss1 = Loss_Tukey(resid,n,Psi_constant);
 // for(j=0;j<p;j++) beta0[j] = beta1[j];
 // lambda = 1.;
-// iter_lambda=0; 
+// iter_lambda=0;
 // while( ( loss1 > loss2 ) ) {
 // 	Rprintf("%f - %f\n", loss1, loss2);
 // 	lambda /= 2.;
-// 	for(j=0;j<p;j++) 
+// 	for(j=0;j<p;j++)
 // 		beta0[j] = (1 - lambda) * beta2[j] + lambda * beta1[j];
 // 	/* get the residuals and loss for beta0 */
-// 	for(i=0;i<n;i++) 
+// 	for(i=0;i<n;i++)
 // 		{ s = 0;
-// 		for(j=0;j<p;j++) 
+// 		for(j=0;j<p;j++)
 // 			s += a[i][j] * beta0[j];
 // 		resid[i] = a[i][p] - s;
 // 		};
@@ -1835,9 +1826,9 @@ free(weights);free(beta1);free(beta2);
 free(beta0);free(resid);
 for(i=0;i<p;i++) free(b[i]);
 free(b);
-if( iterations == max_it ) 
-	return 1; 
-	else 
+if( iterations == max_it )
+	return 1;
+	else
 	return 0;
 }
 
@@ -1859,19 +1850,19 @@ return(sqrt(s));
 
 void mat_prime_vec(double **a, double *b, double *c, int n, int m)
 {
-register int i,j; 
-for(i=0;i<m;i++) 
+register int i,j;
+for(i=0;i<m;i++)
 	for(c[i]=0,j=0;j<n;j++) c[i] += a[j][i] * b[j];
 }
 
-void mat_prime_mat_w(double **a, double *w, double **c, 
+void mat_prime_mat_w(double **a, double *w, double **c,
 		int n, int m)
 {
 register int i,j,k;
 for(i=0;i<m;i++) {
 	for(j=0;j<m;j++) {
 		c[i][j] = 0;
-		for(k=0;k<n;k++) 
+		for(k=0;k<n;k++)
 			c[i][j] += a[k][i] * w[k] * a[k][j];
 	};
 };
