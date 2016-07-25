@@ -1,4 +1,4 @@
-# FRB-model-selection
+# Model selection for linear regression based on the FRB
 
 Code to implement robust model selection for linear regression models based on MM-estimators and the 
 [Fast and Robust Bootstrap] (http://dx.doi.org/10.1214/aos/1021379865)
