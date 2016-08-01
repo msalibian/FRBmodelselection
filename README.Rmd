@@ -1,24 +1,34 @@
-Model Selection with the Fast and Robust Bootstrap
-================
-Matias Salibian
-2016-08-01
+---
+title: "Model Selection with the Fast and Robust Bootstrap"
+author: "Matias Salibian"
+date: "`r format(Sys.Date())`"
+output: github_document
+---
 
-Model selection for linear regression with the Fast and Robust Bootstrap
-------------------------------------------------------------------------
-
-This repository contins `R` code implementing a robust model selection procedure for linear regression models based on MM-estimators and the [Fast and Robust Bootstrap](http://dx.doi.org/10.1214/aos/1021379865) as described in [Salibian-Barrera, M. and Van Aelst, S. (2008)](http://dx.doi.org/10.1016/j.csda.2008.05.007).
-
-You will need to create a dynamic library from the code in `FRB-model-selection.c` using, for example, the following command in your shell:
-
-``` r
-R CMD SHLIB FRB-model-selection.c
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Note that if you are running Windows, you will need to have installed the [RTools package](https://cran.r-project.org/bin/windows/Rtools/) from CRAN.
+## Model selection for linear regression with the Fast and Robust Bootstrap
 
-The following script illustrates this method when applied to the well-known Boston Housing data set.
+This repository contins `R` code implementing a
+robust model selection procedure 
+for linear regression models based on MM-estimators and the 
+[Fast and Robust Bootstrap](http://dx.doi.org/10.1214/aos/1021379865)
+as described in [Salibian-Barrera, M. and Van Aelst, S. (2008)](http://dx.doi.org/10.1016/j.csda.2008.05.007). 
 
-``` r
+
+You will need to create a dynamic library from the code in `FRB-model-selection.c` using,
+for example, the following command in your shell:
+```R
+R CMD SHLIB FRB-model-selection.c
+```
+Note that if you are running Windows, you will need to have installed the [RTools package](https://cran.r-project.org/bin/windows/Rtools/)
+from CRAN. 
+
+The following script illustrates this method when applied to the 
+well-known Boston Housing data set. 
+```R
 library(robustbase)
 source('FRB-model-selection-functions.R')
 
