@@ -9,7 +9,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Model selection for linear regression with the Fast and Robust Bootstrap
+## Robust model selection with the FRB
 
 This repository contins `R` code implementing a
 robust model selection procedure 

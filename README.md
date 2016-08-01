@@ -3,8 +3,8 @@ Model Selection with the Fast and Robust Bootstrap
 Matias Salibian
 2016-08-01
 
-Model selection for linear regression with the Fast and Robust Bootstrap
-------------------------------------------------------------------------
+Robust model selection with the FRB
+-----------------------------------
 
 This repository contins `R` code implementing a robust model selection procedure for linear regression models based on MM-estimators and the [Fast and Robust Bootstrap](http://dx.doi.org/10.1214/aos/1021379865) as described in [Salibian-Barrera, M. and Van Aelst, S. (2008)](http://dx.doi.org/10.1016/j.csda.2008.05.007).
 
