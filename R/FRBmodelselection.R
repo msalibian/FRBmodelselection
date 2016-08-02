@@ -82,7 +82,7 @@ criteria <- function(beta, sigma, y, x, betas, cc=4.685061, p,
   # Welsh's criteria = Shao's criteria + penalty + \sum(r_i(beta))
   # for the estimator in "beta"
   a2 <- mn(beta, sigma, y, x, cc, rho.type, tr) + k * log(n) * p + a1
-  a3 <- mn(beta, sigma, y, x, cc, rho.type, tr)
+  # a3 <- mn(beta, sigma, y, x, cc, rho.type, tr)
 
   #print(c(a1, a3))
 
