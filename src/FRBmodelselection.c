@@ -877,7 +877,7 @@ int lu(double **,int *, double *);
 register int i,j; /* ,k; */
 double best_s=NA, **x_samp, *cand_beta, **x; /* scale */
 double *resid; /* ,s;  */
-double *beta,c, *temp1, *temp2;
+double *beta, *temp1, *temp2;
 int N,p,*b_i; /* , zeroes;  */
 int bbest_r = 2, ggroups = *Groups,
 	nn_group = *N_group, k_fast_s = *K_fast_s;
@@ -1731,7 +1731,7 @@ double Loss_Tukey(double*, int, double);
 
 double **b,s,*beta1, *beta2, *beta0, *weights, *resid;
 double r; // ,loss1,loss2,lambda;
-int iterations=0, iter_lambda;
+int iterations=0; //, iter_lambda;
 register int i,j,k;
 if ( (b = (double **) malloc ( p * sizeof(double *) ) )==NULL )
 	{// Rprintf("\nRun out of memory in rwls\n");
