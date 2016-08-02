@@ -1,7 +1,7 @@
 \name{RFPE}
 \alias{RFPE}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
+\title{Robust future prediction error
 %%  ~~function to do ... ~~
 }
 \description{
@@ -12,26 +12,28 @@ RFPE(x, y, model, control = rlm.control(), sigma.full)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
+  \item{x}{full design matrix, matrix containing all explanatory variables
 %%     ~~Describe \code{x} here~~
 }
-  \item{y}{
+  \item{y}{vector of responses
 %%     ~~Describe \code{y} here~~
 }
-  \item{model}{
+  \item{model}{vector of integers corresponding to the columns of \code{x} to be
+  included
 %%     ~~Describe \code{model} here~~
 }
-  \item{control}{
+  \item{control}{a list of control options as returned by \code{rlm.control}
 %%     ~~Describe \code{control} here~~
 }
-  \item{sigma.full}{
+  \item{sigma.full}{estimated residual scale, generally computed using all
+  available features (explanatory variables)
 %%     ~~Describe \code{sigma.full} here~~
 }
 }
-\details{
+\details{Robust future prediction error
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{
+\value{Returns a real value
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -41,16 +43,13 @@ RFPE(x, y, model, control = rlm.control(), sigma.full)
 \references{
 %% ~put references to the literature/web site here ~
 }
-\author{
+\author{Matias Salibian-Barrera
 %%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+\seealso{\code{\link{rlm.control}}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
@@ -59,9 +58,9 @@ RFPE(x, y, model, control = rlm.control(), sigma.full)
 ##--	or do  help(data=index)  for the standard data sets.
 
 ## The function is currently defined as
-function (x, y, model, control = rlm.control(), sigma.full) 
+function (x, y, model, control = rlm.control(), sigma.full)
 {
-    if (missing(sigma.full)) 
+    if (missing(sigma.full))
         sigma.full <- my.rlm(x, y, control = rlm.control())$scale
     x0 <- x[, model, drop = FALSE]
     fit.mod <- my.rlm(x0, y, control = rlm.control())
@@ -80,4 +79,3 @@ function (x, y, model, control = rlm.control(), sigma.full)
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
