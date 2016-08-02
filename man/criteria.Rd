@@ -5,7 +5,7 @@
 on bootstrapped regression estimates
 %%  ~~function to do ... ~~
 }
-\description{Computes Shao's and Welsh's model selection criteria.
+\description{Computes Shao's and Muller and Welsh's model selection criteria.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -49,7 +49,7 @@ criteria(beta, sigma, y, x, betas, cc = 4.685061, p, k = 1, rho.type = 2, tr = 2
 %%     ~~Describe \code{tr} here~~
 }
 }
-\details{Computes Shao's and Welsh's model selection criteria.
+\details{Computes Shao's and Muller and Welsh's model selection criteria.
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{A list with two components:
@@ -62,6 +62,7 @@ criteria(beta, sigma, y, x, betas, cc = 4.685061, p, k = 1, rho.type = 2, tr = 2
 %% ...
 }
 \references{
+M\"uller, S., Welsh, A.H., 2005. Outlier robust model selection in linear regression. Journal of the American Statistical Association 100, 1297–1310.
 %% ~put references to the literature/web site here ~
 }
 \author{Matias Salibian-Barrera

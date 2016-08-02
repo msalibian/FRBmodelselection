@@ -4,7 +4,9 @@
 \title{Robust future prediction error
 %%  ~~function to do ... ~~
 }
-\description{
+\description{This function computes the 
+robust future prediction error as
+described in Section 5.12 of Maronna et al 2006.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -41,6 +43,8 @@ RFPE(x, y, model, control = rlm.control(), sigma.full)
 %% ...
 }
 \references{
+Maronna, R., Martin, D., Yohai, V.J. (2006). Robust Statistics, theory
+and methods. Wiley and Sons.
 %% ~put references to the literature/web site here ~
 }
 \author{Matias Salibian-Barrera
