@@ -53,7 +53,7 @@ and methods. Wiley and Sons.
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{\code{\link{rlm.control}}}
+\seealso{\code{\link{rlm.control}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
