@@ -1,7 +1,7 @@
 Model Selection with the Fast and Robust Bootstrap
 ================
 Matias Salibian
-2016-08-01
+2016-08-02
 
 Robust model selection with the FRB
 -----------------------------------
