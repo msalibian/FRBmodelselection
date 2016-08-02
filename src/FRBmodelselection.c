@@ -66,16 +66,16 @@ double *Xb, **xb;
 int **boot_samp;
 double **x, **x2, **x3, **x4, *beta_m, *beta_s,*beta_aux;
 double *Fi, *res, *res_s, *w, *ww, dummyscale, scale;
-double *v, *v2, *v_aux, *yb, timefinish, timestart;
+double *v, *v2, *v_aux, *yb; // , timefinish, timestart;
 double u,u2,s,c,Psi_constant;
-double test_chi=0, test_psi=0;
-int n,p,m,nres,seed; // ,*indices;
+// double test_chi=0, test_psi=0;
+int n,p,m,seed; // ,*indices;
 int nboot=*size_boot;
-int fake_p = 0;
+// int fake_p = 0;
 register int i,j,k;
 setbuf(stdout,NULL);
 c = *C; Psi_constant = *Psi_c;
-n = *N; p = *P; nres = *Nres; m = *M; seed = *Seed;
+n = *N; p = *P; m = *M; seed = *Seed;
 boot_samp = (int **) malloc(m * sizeof(int*) );
 for(i=0;i<m;i++)
 	boot_samp[i] = (int*) malloc(nboot *sizeof(int));
@@ -294,15 +294,15 @@ void mat_mat(double **, double **, double **, int, int, int);
 // void disp_vec(double *, int);
 double **x, **x2, **x3, **x4, *beta_m, *beta_s,*beta_aux;
 double *Fi, *res, *res_s, *w, *ww, dummyscale, scale;
-double *v, *v2, *v_aux, *yb, timefinish, timestart;
+double *v, *v2, *v_aux, *yb; // , timefinish, timestart;
 double u,u2,s,c,Psi_constant;
-int n,p,m,nres,seed,*indices;
+int n,p,m,seed,*indices;
 int nboot = *size_boot;
 register int i,j;
 
 setbuf(stdout,NULL);
 c = *C; Psi_constant = *Psi_c;
-n = *N; p = *P; nres = *Nres; m = *M; seed = *Seed;
+n = *N; p = *P; m = *M; seed = *Seed;
 indices = (int *) malloc( n * sizeof(int) );
 v = (double *) malloc( p * sizeof(double) );
 v2 = (double *) malloc( p * sizeof(double) );
@@ -628,8 +628,7 @@ void sample_n_outof_N(int n, int N, int *x)
  */
 register int i,j,cand,flag;
 if( N < n ) {
-	// Rprintf("\nCant get %d out of %d \
-// without replication\n", n, N);
+	// Rprintf("\nCant get %d out of %d without replication\n", n, N);
 	for(i=0;i<n;i++) x[i] = i;
 } else {
 for(i=0;i<n;i++) {
@@ -879,12 +878,12 @@ register int i,j; /* ,k; */
 double best_s=NA, **x_samp, *cand_beta, **x; /* scale */
 double *resid; /* ,s;  */
 double *beta,c, *temp1, *temp2;
-int Nres,N,p,*b_i; /* , zeroes;  */
+int N,p,*b_i; /* , zeroes;  */
 int bbest_r = 2, ggroups = *Groups,
 	nn_group = *N_group, k_fast_s = *K_fast_s;
 double b = 0.5, rrhoc = *C;
-c = *C;
-Nres = *nres; N = *n; p = *P;
+// c = *C;
+N = *n; p = *P;
 srand((long)*seed_rand);
 x = (double **) malloc( N * sizeof(double*) );
 for(i=0;i<N;i++)
@@ -916,7 +915,8 @@ else
 			&bbest_r, &b, &rrhoc, beta_s, &best_s);
 if(fabs(best_s) < ZERO) {
 			 *SCale = 0.0;
-			for(i=0;i<p;beta_m[i]=beta_s[i++]);
+			for(i=0;i<p;i++) 
+			        beta_m[i]=beta_s[i];
 			free(b_i);free(temp1); free(temp2);
 			for(i=0;i<p;i++)
         			free(x_samp[i]);
@@ -1730,7 +1730,7 @@ double Psi_reg(double, double);
 double Loss_Tukey(double*, int, double);
 
 double **b,s,*beta1, *beta2, *beta0, *weights, *resid;
-double r,loss1,loss2,lambda;
+double r; // ,loss1,loss2,lambda;
 int iterations=0, iter_lambda;
 register int i,j,k;
 if ( (b = (double **) malloc ( p * sizeof(double *) ) )==NULL )
