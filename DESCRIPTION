@@ -2,7 +2,7 @@ Package: FRBmodelselection
 Title: Model Selection with the Fast and Robust Bootstrap
 Version: 0.0.0.9000
 Authors@R: person("Matias", "Salibian-Barrera", email = "matias@stat.ubc.ca", role = c("aut", "cre"))
-Description: This repository contins `R` code implementing a robust model selection procedure for linear regression models based on MM-estimators as described in Salibian-Barrera, M. and Van Aelst, S. (2008), http://dx.doi.org/10.1016/j.csda.2008.05.007.
+Description: This repository implements the robust model selection procedure based on MM-estimators as described in Salibian-Barrera, M. and Van Aelst, S. (2008), http://dx.doi.org/10.1016/j.csda.2008.05.007.
 Depends: R (>= 3.3.0), robustbase
 License: GPL-3
 Encoding: UTF-8
