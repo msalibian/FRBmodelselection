@@ -1,7 +1,7 @@
 Model Selection with the Fast and Robust Bootstrap
 ================
 Matias Salibian
-2016-08-02
+2016-08-03
 
 Robust model selection with the FRB
 -----------------------------------
@@ -17,117 +17,210 @@ install_github("msalibian/FRBmodelselection")
 
 An illustrative example will be available here soon.
 
-<!-- You will need to create a dynamic library from the code in `FRB-model-selection.c` using, -->
-<!-- for example, the following command in your shell: -->
-<!-- ```R -->
-<!-- R CMD SHLIB FRB-model-selection.c -->
-<!-- ``` -->
-<!-- Note that if you are running Windows, you will need to have installed the [RTools package](https://cran.r-project.org/bin/windows/Rtools/) -->
-<!-- from CRAN.  -->
-<!-- The following script illustrates this method when applied to the  -->
-<!-- well-known Boston Housing data set.  -->
-<!-- ```R -->
-<!-- library(robustbase) -->
-<!-- source('FRB-model-selection-functions.R') -->
-<!-- # this needs to be changed, when I build a proper R package -->
-<!-- if(length(grep('linux', version$os)) > 0) dyn.load('FRB-model-selection.so') -->
-<!-- if(length(grep('windows', version$os)) > 0) dyn.load('FRB-model-selection.dll') -->
-<!-- # setup a simple example -->
-<!-- data(Boston, package='MASS') -->
-<!-- xx <- model.matrix(medv ~ ., data=Boston ) -->
-<!-- y <- as.vector(Boston$medv) -->
-<!-- n <- length(y) -->
-<!-- # Model selection using stepwise + AIC - BIC - Cp -->
-<!-- library(MASS) -->
-<!-- a.lm <- lm(medv ~ ., data = Boston) -->
-<!-- a.aic <- stepAIC(a.lm, direction='both', k=2, trace=0) -->
-<!-- a.bic <- stepAIC(a.lm, direction='both', k=log(n), trace=0) -->
-<!-- a.cp <- stepAIC(a.lm, direction='both', k=2, scale=summary(a.lm)$sigma, trace=0) -->
-<!-- # Model selection using backward stepwise + RFPE -->
-<!-- p <- 14; model <- 1:14 ; -->
-<!-- criterias.rfpe <- rep(NA, length(model)) -->
-<!-- sigma <- my.rlm(xx,y)$scale # full model scale -->
-<!-- models <- vector('list', length(model)) -->
-<!-- models[[length(models)]] <- model -->
-<!-- criterias.rfpe[length(models)] <- RFPE(x=xx, y=y, model=model, sigma.full=sigma) -->
-<!-- while( p > 1 ) { -->
-<!--   best.c <- 10^10 -->
-<!--   for(i in 2:p) { -->
-<!--     model.c <- model[-i] -->
-<!--     a <- RFPE(x=xx, y=y, model=model.c, sigma.full=sigma) -->
-<!--     if( a < best.c ) { -->
-<!--       new.model <- model.c -->
-<!--       best.c <- a -->
-<!--       criterias.rfpe[p - 1] <- a -->
-<!--     } -->
-<!--   } -->
-<!--   model <- models[[ p - 1]] <- new.model -->
-<!--   p <- p - 1 -->
-<!-- } -->
-<!-- model.rfpe <- models[[ which.min(criterias.rfpe) ]] -->
-<!-- print(c(min(criterias.rfpe), -->
-<!--   RFPE(x=xx, y=y, model=model.rfpe, sigma.full=sigma) )) -->
-<!-- # Model selection using backward stepwise + Shao's and Welsh's criterion + FRB -->
-<!-- b <- 1000; nboot <- 150; p <- 14; set.seed(123) -->
-<!-- # Generate bootstrap samples -->
-<!-- boot.samp <- matrix(sample(n, b*nboot, repl=TRUE), b, nboot) -->
-<!-- model.s <- model.w <- 1:14 -->
-<!-- models.s <- models.w <- vector('list', length(model.s)) -->
-<!-- # Parameters for the criterion function -->
-<!-- k <- 1 ; rho.type <- 1 ; tr <- 2 -->
-<!-- # control options for the MM estimator -->
-<!-- my.ctrl <- rlm.control(M=b, calc.full=0) -->
-<!-- criterias.s <- criterias.w <- rep(NA,14) -->
-<!-- x0 <- xx[, model.s] # same as model.w -- should be full model -->
-<!-- tmp <- roboot(x=x0, y=y, nboot=nboot, boot.samp=boot.samp, -->
-<!--               control=my.ctrl) -->
-<!-- beta <- tmp$coef -->
-<!-- betas <- tmp$ours -->
-<!-- sigma <- tmp$scale -->
-<!-- a <- criteria(beta=beta, sigma=sigma, -->
-<!--               y=y, x=x0, betas=betas, p=p, k=k, rho.type=rho.type, tr=tr) -->
-<!-- criterias.w[length(models.w)] <- a$w -->
-<!-- criterias.s[length(models.s)] <- a$s -->
-<!-- while( p > 1 ) { -->
-<!--   # Welsh's criterion -->
-<!--   best.c <- 10^10 -->
-<!--   for(i in 2:p) { -->
-<!--     model.c <- model.w[-i] -->
-<!--     x0 <- xx[, model.c, drop=FALSE] -->
-<!--     tmp <- roboot(x=x0, y=y, nboot=nboot, boot.samp=boot.samp, -->
-<!--                   control=my.ctrl) -->
-<!--     beta <- tmp$coef -->
-<!--     betas <- tmp$ours -->
-<!--     a <- criteria(beta=beta, sigma=sigma, -->
-<!--                   y=y, x=x0, betas=betas, p=p, k=k, rho.type=rho.type, tr=tr) -->
-<!--     if( a$w < best.c ) { -->
-<!--       new.model <- model.c -->
-<!--       best.c <- a$w -->
-<!--       criterias.w[p-1] <- a$w -->
-<!--     } -->
-<!--   } -->
-<!--   models.w[[ p - 1 ]] <- model.w <- new.model -->
-<!--   # Shao's criterion -->
-<!--   best.c <- 10^10 -->
-<!--   for(i in 2:p) { -->
-<!--     model.c <- model.s[-i] -->
-<!--     x0 <- xx[, model.c, drop=FALSE] -->
-<!--     tmp <- roboot(x=x0, y=y, nboot=nboot, boot.samp=boot.samp, -->
-<!--                   control=my.ctrl) -->
-<!--     beta <- tmp$coef -->
-<!--     betas <- tmp$ours -->
-<!--     a <- criteria(beta=beta, sigma=sigma, -->
-<!--                   y=y, x=x0, betas=betas, p=p, k=k, rho.type=rho.type, tr=tr) -->
-<!--     if( a$s < best.c ) { -->
-<!--       new.model <- model.c -->
-<!--       best.c <- a$s -->
-<!--       criterias.s[p-1] <- a$s -->
-<!--     } -->
-<!--   } -->
-<!--   models.s[[ p - 1 ]] <- model.s <- new.model -->
-<!--   p <- p - 1 -->
-<!-- } -->
-<!-- ( model.shao <- models.s[[ which.min(criterias.s) ]] ) -->
-<!-- ( model.welsh <- models.w[[ which.min(criterias.w) ]] ) -->
-<!-- ( model.rfpe ) -->
-<!-- ``` -->
+The following script illustrates this method when applied to the well-known Boston Housing data set.
+
+``` r
+library(FRBmodelselection)
+```
+
+    ## Loading required package: robustbase
+
+    ## Warning: package 'robustbase' was built under R version 3.3.1
+
+``` r
+data(Boston, package='MASS')
+xx <- model.matrix(medv ~ ., data=Boston )
+y <- as.vector(Boston$medv)
+```
+
+The "classical" stepwise methods all yield the same optimal submodel with 11 features:
+
+``` r
+library(MASS)
+a.lm <- lm(medv ~ ., data = Boston)
+(a.aic <- stepAIC(a.lm, direction='both', k=2, trace=0))$coef
+```
+
+    ##   (Intercept)          crim            zn          chas           nox 
+    ##  36.341145004  -0.108413345   0.045844929   2.718716303 -17.376023429 
+    ##            rm           dis           rad           tax       ptratio 
+    ##   3.801578840  -1.492711460   0.299608454  -0.011777973  -0.946524570 
+    ##         black         lstat 
+    ##   0.009290845  -0.522553457
+
+``` r
+n <- length(y)
+(a.bic <- stepAIC(a.lm, direction='both', k=log(n), trace=0))$coef
+```
+
+    ##   (Intercept)          crim            zn          chas           nox 
+    ##  36.341145004  -0.108413345   0.045844929   2.718716303 -17.376023429 
+    ##            rm           dis           rad           tax       ptratio 
+    ##   3.801578840  -1.492711460   0.299608454  -0.011777973  -0.946524570 
+    ##         black         lstat 
+    ##   0.009290845  -0.522553457
+
+``` r
+(a.cp <- stepAIC(a.lm, direction='both', k=2, scale=summary(a.lm)$sigma, trace=0))$coef
+```
+
+    ##   (Intercept)          crim            zn          chas           nox 
+    ##  36.341145004  -0.108413345   0.045844929   2.718716303 -17.376023429 
+    ##            rm           dis           rad           tax       ptratio 
+    ##   3.801578840  -1.492711460   0.299608454  -0.011777973  -0.946524570 
+    ##         black         lstat 
+    ##   0.009290845  -0.522553457
+
+Using a backwards stepwise approach with the Robust Future Prediction Error criterion yields the following model, also with 11 variables:
+
+``` r
+p <- 14; model <- 1:14 ;
+criterias.rfpe <- rep(NA, length(model))
+sigma <- my.rlm(xx,y)$scale # full model scale
+models <- vector('list', length(model))
+models[[length(models)]] <- model
+criterias.rfpe[length(models)] <- RFPE(x=xx, y=y, model=model, sigma.full=sigma)
+while( p > 1 ) {
+  best.c <- 10^10
+  for(i in 2:p) {
+    model.c <- model[-i]
+    a <- RFPE(x=xx, y=y, model=model.c, sigma.full=sigma)
+    if( a < best.c ) {
+      new.model <- model.c
+      best.c <- a
+      criterias.rfpe[p - 1] <- a
+    }
+  }
+  model <- models[[ p - 1]] <- new.model
+  p <- p - 1
+}
+(model.rfpe <- models[[ which.min(criterias.rfpe) ]])
+```
+
+    ##  [1]  1  2  3  5  6  7  8  9 10 11 12 13
+
+This model is slighlty different from the one found by the AIC-based approaches:
+
+``` r
+dimnames(xx)[[2]][model.rfpe]
+```
+
+    ##  [1] "(Intercept)" "crim"        "zn"          "chas"        "nox"        
+    ##  [6] "rm"          "age"         "dis"         "rad"         "tax"        
+    ## [11] "ptratio"     "black"
+
+``` r
+dimnames(a.aic$model)[[2]]
+```
+
+    ##  [1] "medv"    "crim"    "zn"      "chas"    "nox"     "rm"      "dis"    
+    ##  [8] "rad"     "tax"     "ptratio" "black"   "lstat"
+
+Now we use backward stepwise using Shao's and Welsh's criterion combined with the fast and robust boostrap. We use `b = 1000` bootstrap samples of size `nboot = 150`.
+
+``` r
+b <- 1000; nboot <- 150; p <- 14
+```
+
+We generate the bootstrap samples, and set up lists to store the optimal models to be found for each size 1, 2, ..., p.
+
+``` r
+set.seed(123)
+boot.samp <- matrix(sample(n, b*nboot, repl=TRUE), b, nboot)
+model.s <- model.w <- 1:14
+models.s <- models.w <- vector('list', length(model.s))
+```
+
+We will use a loss function in Tukey's bi-square family, and we do not want to compute the fully-bootstrapped estimators:
+
+``` r
+k <- 1 ; rho.type <- 1 ; tr <- 2
+my.ctrl <- rlm.control(M=b, calc.full=0)
+criterias.s <- criterias.w <- rep(NA,14)
+```
+
+Now we fit the full model, and then proceed in a stewpwise manner:
+
+``` r
+x0 <- xx[, model.s] # same as model.w -- should be full model
+tmp <- roboot(x=x0, y=y, nboot=nboot, boot.samp=boot.samp,
+              control=my.ctrl)
+beta <- tmp$coef
+betas <- tmp$ours
+sigma <- tmp$scale
+a <- criteria(beta=beta, sigma=sigma,
+              y=y, x=x0, betas=betas, p=p, k=k, rho.type=rho.type, tr=tr)
+
+criterias.w[length(models.w)] <- a$w
+criterias.s[length(models.s)] <- a$s
+
+while( p > 1 ) {
+  # Welsh's criterion
+  best.c <- 10^10
+  for(i in 2:p) {
+    model.c <- model.w[-i]
+    x0 <- xx[, model.c, drop=FALSE]
+    tmp <- roboot(x=x0, y=y, nboot=nboot, boot.samp=boot.samp,
+                  control=my.ctrl)
+    beta <- tmp$coef
+    betas <- tmp$ours
+    a <- criteria(beta=beta, sigma=sigma,
+                  y=y, x=x0, betas=betas, p=p, k=k, rho.type=rho.type, tr=tr)
+    if( a$w < best.c ) {
+      new.model <- model.c
+      best.c <- a$w
+      criterias.w[p-1] <- a$w
+    }
+  }
+  models.w[[ p - 1 ]] <- model.w <- new.model
+
+  # Shao's criterion
+  best.c <- 10^10
+  for(i in 2:p) {
+    model.c <- model.s[-i]
+    x0 <- xx[, model.c, drop=FALSE]
+    tmp <- roboot(x=x0, y=y, nboot=nboot, boot.samp=boot.samp,
+                  control=my.ctrl)
+    beta <- tmp$coef
+    betas <- tmp$ours
+    a <- criteria(beta=beta, sigma=sigma,
+                  y=y, x=x0, betas=betas, p=p, k=k, rho.type=rho.type, tr=tr)
+    if( a$s < best.c ) {
+      new.model <- model.c
+      best.c <- a$s
+      criterias.s[p-1] <- a$s
+    }
+  }
+  models.s[[ p - 1 ]] <- model.s <- new.model
+  p <- p - 1
+}
+model.shao <- models.s[[ which.min(criterias.s) ]]
+model.welsh <- models.w[[ which.min(criterias.w) ]]
+model.rfpe
+```
+
+    ##  [1]  1  2  3  5  6  7  8  9 10 11 12 13
+
+The variables selected with these methods are slighlty different again:
+
+``` r
+dimnames(xx)[[2]][model.shao]
+```
+
+    ## [1] "(Intercept)" "rm"          "age"         "dis"         "tax"        
+    ## [6] "ptratio"     "black"
+
+``` r
+dimnames(xx)[[2]][model.welsh]
+```
+
+    ## [1] "(Intercept)" "crim"        "rm"          "age"         "dis"        
+    ## [6] "ptratio"     "black"
+
+``` r
+dimnames(xx)[[2]][model.rfpe]
+```
+
+    ##  [1] "(Intercept)" "crim"        "zn"          "chas"        "nox"        
+    ##  [6] "rm"          "age"         "dis"         "rad"         "tax"        
+    ## [11] "ptratio"     "black"
