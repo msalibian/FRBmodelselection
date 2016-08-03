@@ -10,7 +10,9 @@ tuning options for \code{\link{my.rlm}} and \code{\link{roboot}}.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-rlm.control(M = 2000, seed = 99, Nres = 500, fixed = FALSE, tuning.chi = 1.54764, bb = 0.5, tuning.psi = 4.685061, groups = 5, n.group = 400, k.fast.s = 1, max.it = 50, compute.rd = TRUE, calc.full = 0)
+rlm.control(M = 2000, seed = 99, Nres = 500, fixed = FALSE, 
+tuning.chi = 1.54764, bb = 0.5, tuning.psi = 4.685061, groups = 5, 
+n.group = 400, k.fast.s = 1, max.it = 50, compute.rd = TRUE, calc.full = 0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
