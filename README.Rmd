@@ -25,13 +25,9 @@ already installed):
 library(devtools)
 install_github("msalibian/FRBmodelselection")
 ```
-
-An illustrative example will be available here soon. 
-
-
 The following script illustrates this method when applied to the
 well-known Boston Housing data set.
-```{r preliminary}
+```{r preliminary, message=FALSE, warning=FALSE}
 library(FRBmodelselection)
 data(Boston, package='MASS')
 xx <- model.matrix(medv ~ ., data=Boston )
@@ -42,10 +38,13 @@ optimal submodel with 11 features:
 ```{r classical}
 library(MASS)
 a.lm <- lm(medv ~ ., data = Boston)
-(a.aic <- stepAIC(a.lm, direction='both', k=2, trace=0))$coef
+a.aic <- stepAIC(a.lm, direction='both', k=2, trace=0)
 n <- length(y)
-(a.bic <- stepAIC(a.lm, direction='both', k=log(n), trace=0))$coef
-(a.cp <- stepAIC(a.lm, direction='both', k=2, scale=summary(a.lm)$sigma, trace=0))$coef
+a.bic <- stepAIC(a.lm, direction='both', k=log(n), trace=0)
+a.cp <- stepAIC(a.lm, direction='both', k=2, scale=summary(a.lm)$sigma, trace=0)
+dimnames(a.aic$model)[[2]]
+dimnames(a.bic$model)[[2]]
+dimnames(a.cp$model)[[2]]
 ```
 Using a backwards stepwise 
 approach with the Robust Future Prediction Error criterion yields the 
@@ -161,7 +160,8 @@ model.shao <- models.s[[ which.min(criterias.s) ]]
 model.welsh <- models.w[[ which.min(criterias.w) ]]
 model.rfpe
 ```
-The variables selected with these methods are slighlty different again:
+The models selected with these methods are slighlty different, but
+noticeably smaller than those found using AIC/BIC or Mallow's Cp:
 ```{r sameagain}
 dimnames(xx)[[2]][model.shao]
 dimnames(xx)[[2]][model.welsh]

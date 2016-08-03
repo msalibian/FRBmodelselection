@@ -15,19 +15,10 @@ library(devtools)
 install_github("msalibian/FRBmodelselection")
 ```
 
-An illustrative example will be available here soon.
-
 The following script illustrates this method when applied to the well-known Boston Housing data set.
 
 ``` r
 library(FRBmodelselection)
-```
-
-    ## Loading required package: robustbase
-
-    ## Warning: package 'robustbase' was built under R version 3.3.1
-
-``` r
 data(Boston, package='MASS')
 xx <- model.matrix(medv ~ ., data=Boston )
 y <- as.vector(Boston$medv)
@@ -38,38 +29,29 @@ The "classical" stepwise methods all yield the same optimal submodel with 11 fea
 ``` r
 library(MASS)
 a.lm <- lm(medv ~ ., data = Boston)
-(a.aic <- stepAIC(a.lm, direction='both', k=2, trace=0))$coef
-```
-
-    ##   (Intercept)          crim            zn          chas           nox 
-    ##  36.341145004  -0.108413345   0.045844929   2.718716303 -17.376023429 
-    ##            rm           dis           rad           tax       ptratio 
-    ##   3.801578840  -1.492711460   0.299608454  -0.011777973  -0.946524570 
-    ##         black         lstat 
-    ##   0.009290845  -0.522553457
-
-``` r
+a.aic <- stepAIC(a.lm, direction='both', k=2, trace=0)
 n <- length(y)
-(a.bic <- stepAIC(a.lm, direction='both', k=log(n), trace=0))$coef
+a.bic <- stepAIC(a.lm, direction='both', k=log(n), trace=0)
+a.cp <- stepAIC(a.lm, direction='both', k=2, scale=summary(a.lm)$sigma, trace=0)
+dimnames(a.aic$model)[[2]]
 ```
 
-    ##   (Intercept)          crim            zn          chas           nox 
-    ##  36.341145004  -0.108413345   0.045844929   2.718716303 -17.376023429 
-    ##            rm           dis           rad           tax       ptratio 
-    ##   3.801578840  -1.492711460   0.299608454  -0.011777973  -0.946524570 
-    ##         black         lstat 
-    ##   0.009290845  -0.522553457
+    ##  [1] "medv"    "crim"    "zn"      "chas"    "nox"     "rm"      "dis"    
+    ##  [8] "rad"     "tax"     "ptratio" "black"   "lstat"
 
 ``` r
-(a.cp <- stepAIC(a.lm, direction='both', k=2, scale=summary(a.lm)$sigma, trace=0))$coef
+dimnames(a.bic$model)[[2]]
 ```
 
-    ##   (Intercept)          crim            zn          chas           nox 
-    ##  36.341145004  -0.108413345   0.045844929   2.718716303 -17.376023429 
-    ##            rm           dis           rad           tax       ptratio 
-    ##   3.801578840  -1.492711460   0.299608454  -0.011777973  -0.946524570 
-    ##         black         lstat 
-    ##   0.009290845  -0.522553457
+    ##  [1] "medv"    "crim"    "zn"      "chas"    "nox"     "rm"      "dis"    
+    ##  [8] "rad"     "tax"     "ptratio" "black"   "lstat"
+
+``` r
+dimnames(a.cp$model)[[2]]
+```
+
+    ##  [1] "medv"    "crim"    "zn"      "chas"    "nox"     "rm"      "dis"    
+    ##  [8] "rad"     "tax"     "ptratio" "black"   "lstat"
 
 Using a backwards stepwise approach with the Robust Future Prediction Error criterion yields the following model, also with 11 variables:
 
@@ -201,7 +183,7 @@ model.rfpe
 
     ##  [1]  1  2  3  5  6  7  8  9 10 11 12 13
 
-The variables selected with these methods are slighlty different again:
+The models selected with these methods are slighlty different, but noticeably smaller than those found using AIC/BIC or Mallow's Cp:
 
 ``` r
 dimnames(xx)[[2]][model.shao]
