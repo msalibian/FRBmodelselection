@@ -151,8 +151,7 @@ Rho <- function(x, cc=4.685061, type=1, tr=2) {
             tuning.psi = as.double(tuning.psi),
             as.integer(max.it), integer(1),
             as.integer(groups), as.integer(n.group),
-            as.integer(k.fast.s),
-            PACKAGE='FRBmodelselection')
+            as.integer(k.fast.s)) #, PACKAGE='FRBmodelselection')
     a$ours <- scale( matrix(a$ours, nrow = M),
                      center = -a$coef, scale=FALSE)
     a$full <- matrix(a$full, nrow = M)
@@ -221,8 +220,7 @@ rlm.control <- function(M=2000,seed = 99, Nres = 500,
             as.integer(1),
             as.integer(seed), as.double(tuning.chi),
             as.double(tuning.psi), as.integer(groups),
-            as.integer(n.group), as.integer(k.fast.s),
-            PACKAGE='FRBmodelselection')
+            as.integer(n.group), as.integer(k.fast.s)) #, PACKAGE='FRBmodelselection')
 
     return(list(coef=a$beta.m, scale=a$s, coef.s = a$beta.s))
 
