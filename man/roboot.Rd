@@ -1,10 +1,12 @@
 \name{roboot}
 \alias{roboot}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
+\title{Implements the Fast and Robust Bootstrap
 %%  ~~function to do ... ~~
 }
-\description{
+\description{Implements the Fast and Robust Bootstrap
+for MM-regression estimators as proposed in
+Salibian-Barrera and Zamar (2002)
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -39,9 +41,10 @@ roboot(x, y, nboot, boot.samp, control = rlm.control())
 %% ...
 }
 \references{
+Salibian-Barrera, Matias; Zamar, Ruben H. Bootrapping robust estimates of regression. Ann. Statist. 30 (2002), no. 2, 556--582. doi:10.1214/aos/1021379865. http://projecteuclid.org/euclid.aos/1021379865.
 %% ~put references to the literature/web site here ~
 }
-\author{
+\author{Matias Salibian-Barrera
 %%  ~~who you are~~
 }
 \note{
@@ -50,7 +53,7 @@ roboot(x, y, nboot, boot.samp, control = rlm.control())
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+\seealso{\code{\link{my.rlm}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{

@@ -1,10 +1,10 @@
 \name{my.rlm}
 \alias{my.rlm}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
+\title{MM-regression estimators. 
 %%  ~~function to do ... ~~
 }
-\description{
+\description{This function computes MM-regression estimators.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -12,20 +12,23 @@ my.rlm(x, y, control = rlm.control())
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
+  \item{x}{Design matrix, each vector of covariates in a row.
 %%     ~~Describe \code{x} here~~
 }
-  \item{y}{
+  \item{y}{Vector of response variables.
 %%     ~~Describe \code{y} here~~
 }
-  \item{control}{
+  \item{control}{List of control options as returned by \code{rlm.control}.
 %%     ~~Describe \code{control} here~~
 }
 }
-\details{
+\details{This function computes an MM-regression estimator. 
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{
+\value{The function returns a list with the following components:
+\item{coef }{Vector of MM-regression estimates}
+\item{scale }{Estimated residual scale}
+\item{coef.s }{Vector of S-regression estimates}
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -35,7 +38,7 @@ my.rlm(x, y, control = rlm.control())
 \references{
 %% ~put references to the literature/web site here ~
 }
-\author{
+\author{Matias Salibian-Barrera
 %%  ~~who you are~~
 }
 \note{
@@ -44,7 +47,7 @@ my.rlm(x, y, control = rlm.control())
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+\seealso{\code{\link{rlm.control}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{

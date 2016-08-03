@@ -2,7 +2,10 @@
 \alias{criteria}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Computes two model selection criteria based
-on bootstrapped regression estimates
+on bootstrapped regression estimates, using the Fast
+and Robust Bootstrap of Salibian-Barrera and Zamar (2002), 
+as proposed in 
+Salibian-Barrera, M. and Van Aels, S. (2008).
 %%  ~~function to do ... ~~
 }
 \description{Computes Shao's and Muller and Welsh's model selection criteria.
@@ -63,6 +66,10 @@ criteria(beta, sigma, y, x, betas, cc = 4.685061, p, k = 1, rho.type = 2, tr = 2
 }
 \references{
 M\"uller, S., Welsh, A.H., 2005. Outlier robust model selection in linear regression. Journal of the American Statistical Association 100, 1297–1310.
+
+Matias Salibian-Barrera, Stefan Van Aelst, Robust model selection using fast and robust bootstrap, Computational Statistics & Data Analysis, Volume 52, Issue 12, 15 August 2008, Pages 5121-5135, ISSN 0167-9473, http://dx.doi.org/10.1016/j.csda.2008.05.007.
+
+Salibian-Barrera, Matias; Zamar, Ruben H. Bootrapping robust estimates of regression. Ann. Statist. 30 (2002), no. 2, 556--582. doi:10.1214/aos/1021379865. http://projecteuclid.org/euclid.aos/1021379865.
 %% ~put references to the literature/web site here ~
 }
 \author{Matias Salibian-Barrera

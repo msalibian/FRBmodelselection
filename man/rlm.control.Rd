@@ -1,10 +1,11 @@
 \name{rlm.control}
 \alias{rlm.control}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
+\title{Options for the MM-regression estimator
 %%  ~~function to do ... ~~
 }
-\description{
+\description{This function returns a list of 
+tuning options for \code{my.rlm}.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -52,10 +53,11 @@ rlm.control(M = 2000, seed = 99, Nres = 500, fixed = FALSE, tuning.chi = 1.54764
 %%     ~~Describe \code{calc.full} here~~
 }
 }
-\details{
+\details{Returns a list of all tuning constants and their values, which
+are used by \code{my.rlm}.
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{
+\value{Returns a list of all tuning constants and their values.
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -65,7 +67,7 @@ rlm.control(M = 2000, seed = 99, Nres = 500, fixed = FALSE, tuning.chi = 1.54764
 \references{
 %% ~put references to the literature/web site here ~
 }
-\author{
+\author{Matias Salibian-Barrera
 %%  ~~who you are~~
 }
 \note{
@@ -74,7 +76,7 @@ rlm.control(M = 2000, seed = 99, Nres = 500, fixed = FALSE, tuning.chi = 1.54764
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
+\seealso{\code{\link{my.rlm}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
