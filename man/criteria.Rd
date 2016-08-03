@@ -1,14 +1,15 @@
 \name{criteria}
 \alias{criteria}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Computes two model selection criteria based
+\title{Shao's and Muller and Welsh's model selection criteria.
+%%  ~~function to do ... ~~
+}
+\description{
+Computes two model selection criteria based
 on bootstrapped regression estimates, using the Fast
 and Robust Bootstrap of Salibian-Barrera and Zamar (2002), 
 as proposed in 
 Salibian-Barrera, M. and Van Aels, S. (2008).
-%%  ~~function to do ... ~~
-}
-\description{Computes Shao's and Muller and Welsh's model selection criteria.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
