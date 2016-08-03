@@ -8,6 +8,13 @@ Robust model selection with the FRB
 
 This package implements a robust model selection procedure for linear regression models based on MM-estimators and the [Fast and Robust Bootstrap](http://dx.doi.org/10.1214/aos/1021379865) as described in [Salibian-Barrera, M. and Van Aelst, S. (2008)](http://dx.doi.org/10.1016/j.csda.2008.05.007).
 
+To install it use the following commands (assuming that you have the `devtools` package from [CRAN](https://cran.r-project.org) already installed):
+
+``` r
+library(devtools)
+install_github("msalibian/FRBmodelselection")
+```
+
 An illustrative example will be available here soon.
 
 <!-- You will need to create a dynamic library from the code in `FRB-model-selection.c` using, -->
