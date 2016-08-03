@@ -14,26 +14,50 @@ roboot(x, y, nboot, boot.samp, control = rlm.control())
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
+  \item{x}{Design matrix.
 %%     ~~Describe \code{x} here~~
 }
-  \item{y}{
+  \item{y}{Vector of responses.
 %%     ~~Describe \code{y} here~~
 }
-  \item{nboot}{
+  \item{nboot}{Size of each bootstrap sample.
 %%     ~~Describe \code{nboot} here~~
 }
-  \item{boot.samp}{
+  \item{boot.samp}{\code{M} by \code{nboot} matrix of observation indices,
+  each row corresponds to the indices of a bootstrap sample. Here 
+  \code{M} is set using the argument \code{control}. See below. 
 %%     ~~Describe \code{boot.samp} here~~
 }
-  \item{control}{
+  \item{control}{List of control parameters for the robust estimator and 
+  the bootstrap, as returned by \code{\link{rlm.control}}.
 %%     ~~Describe \code{control} here~~
 }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{
+\value{A list with the following components:
+\item{fitted.value }{Vector of fitted values using the full-sample robust estimator.}
+\item{residuals }{Vector of residuals from  the full-sample robust estimator.}
+\item{rank }{Rank of the design matrix.}
+\item{degree.freedom }{Degrees of freedom of the residuals, typically \code{n - rank}.}
+\item{coefficients }{Vector of MM-regression estimates.}
+\item{s }{Vector of S-regression estimates.}
+\item{scale }{Estimated scale of the regression errors.}
+\item{seed }{Seed used for the pseudo-random numbers generator used to 
+compute the MM-regression estimates. Set via \code{\link{rlm.control}}.}
+\item{cov }{Bootstrap estimate of the covariance matrix of the MM-regression estimates.}
+\item{ours }{\code{M} by \code{p} matrix of fast and robust bootstrapped MM-regression
+estimates}
+\item{full }{if the element \code{calc.full} 
+of the list in argument \code{control}
+equals 1, then \code{full} contains
+an \code{M} by \code{p} matrix of bootstrapped MM-regression estimates, otherwise
+it is a matrix of zeroes.}
+%%   z <- list(fitted.value=as.vector(f), residuals=as.vector(r),
+%%              rank=rank, degree.freedom=n-rank, coefficients=coef, s=a$s,
+%%              scale=a$scale, seed=a$seed, cov=var(a$ours,na.rm=TRUE),
+%%              ours=a$ours, full=a$full)
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -53,7 +77,7 @@ Salibian-Barrera, Matias; Zamar, Ruben H. Bootrapping robust estimates of regres
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{\code{\link{my.rlm}}
+\seealso{\code{\link{my.rlm}}, \code{\link{rlm.control}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{

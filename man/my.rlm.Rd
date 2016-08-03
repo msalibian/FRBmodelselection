@@ -18,7 +18,7 @@ my.rlm(x, y, control = rlm.control())
   \item{y}{Vector of response variables.
 %%     ~~Describe \code{y} here~~
 }
-  \item{control}{List of control options as returned by \code{rlm.control}.
+  \item{control}{List of control options as returned by \code{\link{rlm.control}}.
 %%     ~~Describe \code{control} here~~
 }
 }
