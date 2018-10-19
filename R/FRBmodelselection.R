@@ -1,13 +1,13 @@
 
 
-RFPE <- function(x,y,model,control=rlm.control(), sigma.full)
+RFPE <- function(x, y, model, control=rlm.control(), sigma.full)
 {
   if(missing(sigma.full))
-    sigma.full <- my.rlm(x,y, control=rlm.control())$scale
+    sigma.full <- my.rlm(x,y, control=control)$scale
   # Goodness of fit
 
   x0 <- x[,model, drop=FALSE]
-  fit.mod <- my.rlm(x0,y, control=rlm.control())
+  fit.mod <- my.rlm(x0,y, control=control)
   #print(fit.mod)
   beta.mod <- fit.mod$coef
   #print(beta.mod)
